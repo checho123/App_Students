@@ -43,6 +43,8 @@ public class CanvasManager : MonoBehaviour
     private TMP_Text noteInitialText;
     [SerializeField]
     private Slider notaInitial;
+    [SerializeField]
+    private bool filter;
 
     void Start()
     {
@@ -61,6 +63,7 @@ public class CanvasManager : MonoBehaviour
         noteText.text = "Note: " + sliderNote.value + " /5.0";
         noteInitialText.text = "Note :" + notaInitial.value;
         Score();
+        ScoreStudent();
     }
 
     private void Score()
@@ -86,9 +89,9 @@ public class CanvasManager : MonoBehaviour
     {
         foreach (var student in listStudent.students)
         {
-            if (student.note >= 3.0)
+            if (student.status == "Aprovado" || student.status  == "Reprovado")
             {
-                listApproved.Add(student.note);
+                Debug.Log("Pasa 1 filtro");
             }
         }
     }
@@ -160,15 +163,14 @@ public class CanvasManager : MonoBehaviour
         studentEdit.status = statusCurrent;
         dataManager.student = studentEdit;
         dataManager.UpdateStudent(selectIndex);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
+        SceneManager.LoadScene(0);        
     }
 
     public void DeleteStudent()
     {
         dataManager.DeleteFile(selectIndex);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(0);
     }
-
 
     //Create new Students
     public void CreateNewStudents()
@@ -183,9 +185,20 @@ public class CanvasManager : MonoBehaviour
         studentEdit.status = "Sin Calificacion";
         dataManager.student = studentEdit;
         dataManager.CreateNewStudent();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(0);
     }
 
+    public void ValideStudentScore()
+    {
+        if (filter)
+        {
+            Debug.Log("Pasa Todos los filtros");
+        }
+        else
+        {
+            Debug.Log("No pasa los filtros");
+        }
+    }
 }
 
 
